@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+        {% if category %}
+                {{category.description | truncatewords:155}}
+        {% else %}
+               Welcome to ABC Store Where you can buy....
+        {% endif %}
+{% endblock %}
+{% block title %}
+        {% if category %}
+                {{category.name}} - ABC store
+        {% else %}
+               Welcome to ABC Store- See our new Collections!
+        {% endif %}
+{% endblock %}
+{% block content %}
+        {% if category %}
+             <div>
+                     <div class="row my_row_class">
+                         <div class="mx_auto">
+                             <p> <a href="{% url 'shop:allProdCat' %}">Our product Collections</a> </p>
+                     </div>
+                         </div>
+             </div>
+        {% endif %}
+        <div class="mx_auto">
+        {% if category %}
+           <img class="my_image" src="{{category.image.url}}" alt="{{category.name}}" width="500px;">
+        </div>
+        <br>
+        <div>
+           <h1 class="text-center  my_title">{{category.name}}</h1>
+           <p class="text-justify">{{category.description}}</p>
+        </div>
+        {% else %}
+        <div>
+                <img class="my_image  my_image_padding" src="{% static 'img/Banner.png' %}" alt="Our Products" width="1300px;">
+        </div>
+        <br>
+        <div>
+                <h1 class="text-center my_title">Our product collection</h1>
+                <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+
+Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor.  </p>
+        </div>
+        {% endif %}
+        <div class="container">
+                <div class="row mx_auto">
+                    {% for product in products.object_list %}
+                    <div class="my_bottom_margin col-9 col-md-12 col-md-4 col-lg-4">
+                        <div class="card text-center " style="min-width:18rem;">
+                            <a href="{{product.get_url}}"><img class="card-img-top my_image" style="height:350px; width:100%;" src="{{product.image.url}}" alt="{{product.name}}" width="120px;"  height="120px;"></a>
+                            <div class="card-body">
+                                    <h4>{{product.name}}</h4>
+                                    <p>{{product.price}}</p>
+                            </div>
+                        </div>
+                    </div>
+                     {% endfor %}
+                </div>
+            <div class="mx_auto">
+                {% if products.paginator.num_pages > 1 %}
+                  <hr>
+                <div class="text-center">
+                    {% for pg in products.paginator.page_range %}
+                      <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+                    {% endfor %}
+                </div>
+                  {% endif %}
+            </div>
+            <br>
+        </div>
+{% endblock %}
+
+
